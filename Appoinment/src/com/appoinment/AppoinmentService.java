@@ -77,7 +77,7 @@ public class AppoinmentService {
 		}
 	}
 	
-	@DELETE
+	/*@DELETE
 	@Path("/DeleteAppoinment")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -99,7 +99,7 @@ public class AppoinmentService {
 		} else {
 			return "Invalid session";
 		}
-	}
+	}*/
 	
 	@PUT
 	@Path("/RejectAppoinment")

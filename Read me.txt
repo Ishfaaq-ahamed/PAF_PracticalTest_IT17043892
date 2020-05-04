@@ -1,0 +1,22 @@
+# Appoinment Service
+
+# The very first input, patient id can be any integer value which has to be registered by the user API.
+  Since here this Appoinment Service acts individually, any integer value could be entered as patient ID
+
+# Doctor ID is also same as the patient ID but it is validated only to accept values 1 and 2 since email addresses
+  must be visible in notification and only two doctors are added to the database
+  with IDs 1 and 2.
+
+# There are only two Hospitals added to the database so the input value is restrivted to be either 1 or 2.
+
+# There areonly 5 treatment types available on the database so the input values are restricted to be a value
+  within the range of 1 to 5.
+
+# The time is considered as slots which is consisted with a value from 1 - 8 which meaans 1 represents
+  8.00am - 9.00am and 8 represents 3.00pm - 4.00pm. So the values to that field are restricted to be a 
+  value in range of 1 to 8.
+
+# Once the appoinment is created, It'll be on the state of 'Pending' and once the appoinment is confirmed,
+  It would change it's status. That's the update funcytion here
+
+# Delete function here is just the usual delete.

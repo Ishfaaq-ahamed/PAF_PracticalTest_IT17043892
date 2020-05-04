@@ -133,7 +133,6 @@ public class Appoinment {
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate("INSERT INTO appoinment(p_id, d_id, h_id, treatment_id, time) VALUES ('"+patientID+"','"+doctorID+"','"+hospitalID+"','"+treatmentID+"','"+time+"')");
 			
-			readAppointments();
 		} catch(Exception E) {
 			System.out.println(E);
 		}
@@ -163,7 +162,12 @@ public class Appoinment {
         WebResource webResource = restClient.resource(url);
         ClientResponse resp = webResource.accept("text/html").get(ClientResponse.class);
         text = resp.getEntity(String.class);
-        return text;
+        String details = readAppointments();
+        //String output = "{\"status\": \""+ text +"\", \"data\":\"" +details + "\"}";  
+        String Test = "Appoinment Created Successfully Reciept Sent To Saman@gmail.com";
+        String Data = "NEW DATA";
+        String output = "{\"status\":\""+text+"\", \"data\":\""+details+"\"}";  
+        return output;
 	}
 	
 	public String DeleteNotifiication(int AppoinmentID, int UserID) {
@@ -174,11 +178,15 @@ public class Appoinment {
         WebResource webResource = restClient.resource(url);
         ClientResponse resp = webResource.accept("text/html").get(ClientResponse.class);
         text = resp.getEntity(String.class);
-
-        return text;
+        
+        String details = readAppointments();
+        String output = "{\"status\":\""+text +"\", \"data\":\"" +details + "\"}";  
+        return output;
 	}
 	
-	public String DeleteAppoinment(int AppoinmentID, int UserID) {
+	public String DeleteAppoinment(String appoinmentID) {
+		int AppoinmentID = Integer.valueOf(appoinmentID);
+		int UserID = 1;
 		try {
 			Connection con = connect();
 			Statement stmt = con.createStatement();
@@ -190,16 +198,19 @@ public class Appoinment {
 		return DeleteNotifiication(AppoinmentID, UserID);
 	}
 	
-	public String ConfirmAppoinment(int AppoinmentID, int UserID) {
+	public String ConfirmAppoinment(String appoinmentID) {
 		String text = "Innitial";
-
+		int AppoinmentID = Integer.valueOf(appoinmentID);
+		int UserID = 1;
 		String url = "http://localhost:8081/Notification/NotificationService/Notification/ConfirmAppoinment?AppoinmentID="+AppoinmentID+"&UserID="+UserID;
         Client restClient = Client.create();
         WebResource webResource = restClient.resource(url);
         ClientResponse resp = webResource.accept("text/html").get(ClientResponse.class);
         text = resp.getEntity(String.class);
 
-        return text;
+        String details = readAppointments();
+        String output = "{\"status\":\""+text +"\", \"data\":\"" +details + "\"}";  
+        return output;
 	}
 	
 	public String RejectAppoinment(int AppoinmentID, int UserID) {
@@ -329,18 +340,24 @@ public class Appoinment {
 			}
 			// Prepare the html table to be displayed
 			output = "<table border='1'><tr><th>Appointment ID</th><th>Patient ID</th><th>Doctor ID</th>"
-					+ "<th>Hospital ID</th><th>Treatment ID</th><th>Time</th><th>Update</th><th>Remove</th></tr>";
+					+ "<th>Hospital ID</th><th>Treatment ID</th><th>Time</th><th>Status</th><th>Update</th><th>Remove</th></tr>";
 			String query = "select * from appoinment";
 			Statement stmt = con.createStatement();
+			Statement stmt2 = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			// iterate through the rows in the result set
 			while (rs.next()) {
+				String Status = "";
 				String AppointmentID = Integer.toString(rs.getInt("apt_id"));
 				String PatientID = Integer.toString(rs.getInt("p_id"));
 				String DoctorID = Integer.toString(rs.getInt("d_id"));
 				String HospitalID = Integer.toString(rs.getInt("h_id"));
 				String TreatmentID = Integer.toString(rs.getInt("treatment_id"));
 				String Time = Integer.toString(rs.getInt("time"));
+				ResultSet rs2 = stmt2.executeQuery("select status from notification where apt_id = '"+rs.getInt("apt_id")+"'");
+				while (rs2.next()) {
+					Status = rs2.getString("status");
+				}
 				// Add into the html table
 				output += "<td>" + AppointmentID + "</td>";
 				output += "<td>" + PatientID + "</td>";
@@ -348,9 +365,9 @@ public class Appoinment {
 				output += "<td>" + HospitalID + "</td>";
 				output += "<td>" + TreatmentID + "</td>";
 				output += "<td>" + Time + "</td>";
+				output += "<td>" + Status + "</td>";
 			// buttons
-			output += "<td><input name='btnUpdate' type='button'value='Update'></td><td><input name='btnRemove' type='button'value='Remove' data-aptid='"
-					+ AppointmentID + "'>" + "</td></tr>";
+			output += "<td><input name='btnUpdate' type='button'value='Confirm' data-appID='"+ AppointmentID + "'></td><td><input name='btnRemove' type='button'value='Delete' data-appID='"+ AppointmentID + "'></td></tr>";
 			}
 			con.close();
 			// Complete the html table
