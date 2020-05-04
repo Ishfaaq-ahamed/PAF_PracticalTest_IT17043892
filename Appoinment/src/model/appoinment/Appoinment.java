@@ -122,12 +122,18 @@ public class Appoinment {
 		return Times;
 	}
 	
-	public String CreateAppoinment(int patientID, int doctorID, int hospitalID, int treatmentID, int time) {	
+	public String CreateAppoinment(String PatientID, String DoctorID, String HospitalID, String TreatmentID, String Time) {	
+		int patientID = Integer.valueOf(PatientID);
+		int doctorID = Integer.valueOf(DoctorID);
+		int hospitalID = Integer.valueOf(HospitalID);
+		int treatmentID = Integer.valueOf(TreatmentID);
+		int time = Integer.valueOf(Time);
 		try {
 			Connection con = connect();
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate("INSERT INTO appoinment(p_id, d_id, h_id, treatment_id, time) VALUES ('"+patientID+"','"+doctorID+"','"+hospitalID+"','"+treatmentID+"','"+time+"')");
 			
+			readAppointments();
 		} catch(Exception E) {
 			System.out.println(E);
 		}
@@ -313,4 +319,48 @@ public class Appoinment {
         	return false;
         }
 	}
+	
+	public String readAppointments() {
+		String output = "";
+		try {
+			Connection con = connect();
+			if (con == null) {
+				return "Error while connecting to the database for reading.";
+			}
+			// Prepare the html table to be displayed
+			output = "<table border='1'><tr><th>Appointment ID</th><th>Patient ID</th><th>Doctor ID</th>"
+					+ "<th>Hospital ID</th><th>Treatment ID</th><th>Time</th><th>Update</th><th>Remove</th></tr>";
+			String query = "select * from appoinment";
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			// iterate through the rows in the result set
+			while (rs.next()) {
+				String AppointmentID = Integer.toString(rs.getInt("apt_id"));
+				String PatientID = Integer.toString(rs.getInt("p_id"));
+				String DoctorID = Integer.toString(rs.getInt("d_id"));
+				String HospitalID = Integer.toString(rs.getInt("h_id"));
+				String TreatmentID = Integer.toString(rs.getInt("treatment_id"));
+				String Time = Integer.toString(rs.getInt("time"));
+				// Add into the html table
+				output += "<td>" + AppointmentID + "</td>";
+				output += "<td>" + PatientID + "</td>";
+				output += "<td>" + DoctorID + "</td>";
+				output += "<td>" + HospitalID + "</td>";
+				output += "<td>" + TreatmentID + "</td>";
+				output += "<td>" + Time + "</td>";
+			// buttons
+			output += "<td><input name='btnUpdate' type='button'value='Update'></td><td><input name='btnRemove' type='button'value='Remove' data-aptid='"
+					+ AppointmentID + "'>" + "</td></tr>";
+			}
+			con.close();
+			// Complete the html table
+			output += "</table>";
+		}
+		catch (Exception e) {
+			output = "Error while reading the items.";
+			System.err.println(e.getMessage());
+		}
+		return output;
+	}
+
 }

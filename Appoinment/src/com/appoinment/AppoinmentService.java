@@ -69,8 +69,8 @@ public class AppoinmentService {
 	@POST
 	@Path("/Appoinment")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String CreateAppoinment(@QueryParam("patientID") int patientID, @QueryParam("doctorID") int doctorID, @QueryParam("hospitalID") int hospitalID, @QueryParam("treatmentID") int treatmentID, @QueryParam("time") int time) {
-		if(APP.GetSession(patientID)) {
+	public String CreateAppoinment(@QueryParam("patientID") String patientID, @QueryParam("doctorID") String doctorID, @QueryParam("hospitalID") String hospitalID, @QueryParam("treatmentID") String treatmentID, @QueryParam("time") String time) {
+		if(APP.GetSession(Integer.valueOf(patientID))) {
 			return APP.CreateAppoinment(patientID, doctorID, hospitalID, treatmentID, time);
 		} else {
 			return "Invalid session";
