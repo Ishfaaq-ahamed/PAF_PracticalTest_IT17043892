@@ -163,9 +163,6 @@ public class Appoinment {
         ClientResponse resp = webResource.accept("text/html").get(ClientResponse.class);
         text = resp.getEntity(String.class);
         String details = readAppointments();
-        //String output = "{\"status\": \""+ text +"\", \"data\":\"" +details + "\"}";  
-        String Test = "Appoinment Created Successfully Reciept Sent To Saman@gmail.com";
-        String Data = "NEW DATA";
         String output = "{\"status\":\""+text+"\", \"data\":\""+details+"\"}";  
         return output;
 	}
@@ -180,7 +177,7 @@ public class Appoinment {
         text = resp.getEntity(String.class);
         
         String details = readAppointments();
-        String output = "{\"status\":\""+text +"\", \"data\":\"" +details + "\"}";  
+        String output = "{\"status\":\""+text+"\", \"data\":\""+details+"\"}";   
         return output;
 	}
 	
@@ -209,7 +206,7 @@ public class Appoinment {
         text = resp.getEntity(String.class);
 
         String details = readAppointments();
-        String output = "{\"status\":\""+text +"\", \"data\":\"" +details + "\"}";  
+        String output = "{\"status\":\""+text+"\", \"data\":\""+details+"\"}";  
         return output;
 	}
 	
@@ -338,14 +335,12 @@ public class Appoinment {
 			if (con == null) {
 				return "Error while connecting to the database for reading.";
 			}
-			// Prepare the html table to be displayed
 			output = "<table border='1'><tr><th>Appointment ID</th><th>Patient ID</th><th>Doctor ID</th>"
 					+ "<th>Hospital ID</th><th>Treatment ID</th><th>Time</th><th>Status</th><th>Update</th><th>Remove</th></tr>";
 			String query = "select * from appoinment";
 			Statement stmt = con.createStatement();
 			Statement stmt2 = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-			// iterate through the rows in the result set
 			while (rs.next()) {
 				String Status = "";
 				String AppointmentID = Integer.toString(rs.getInt("apt_id"));
@@ -358,7 +353,6 @@ public class Appoinment {
 				while (rs2.next()) {
 					Status = rs2.getString("status");
 				}
-				// Add into the html table
 				output += "<td>" + AppointmentID + "</td>";
 				output += "<td>" + PatientID + "</td>";
 				output += "<td>" + DoctorID + "</td>";
@@ -366,11 +360,9 @@ public class Appoinment {
 				output += "<td>" + TreatmentID + "</td>";
 				output += "<td>" + Time + "</td>";
 				output += "<td>" + Status + "</td>";
-			// buttons
-			output += "<td><input name='btnUpdate' type='button'value='Confirm' data-appID='"+ AppointmentID + "'></td><td><input name='btnRemove' type='button'value='Delete' data-appID='"+ AppointmentID + "'></td></tr>";
+			output += "<td><input id='btnUpdate' name='btnUpdate' type='button' style='background-color:green' value='Confirm' onclick='onUpdatesClick("+ AppointmentID + ")'></td><td><input id='btnRemove' name='btnRemove' type='button' style='background-color:red' value='Delete' onclick='onDeleteClick("+ AppointmentID + ")'></td></tr>";
 			}
 			con.close();
-			// Complete the html table
 			output += "</table>";
 		}
 		catch (Exception e) {

@@ -33,12 +33,11 @@ pageEncoding="ISO-8859-1"%>
 		 		<input id="Time" name="Time" type="date" class="form-control form-control-sm">
 				
 				<br><br>
-		 		<input id="btnCreate" name="btnCreate" type="button" value="Create Appoinment">
-		 		<input type="hidden" id="hidItemIDSave" name="hidItemIDSave" value="">
+		 		<input id="btnCreate" name="btnCreate" type="button" style="background-color:blue; color:white" value="Create Appoinment">
 			</form>
 			
 			<br><br>
-			<div id="alert"></div>
+			<div id="alert" style="background-color:lightblue"></div>
 			
 			<br><br>
 			<div id="divAppoinmentsGrid">

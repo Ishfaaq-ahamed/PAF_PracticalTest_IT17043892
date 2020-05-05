@@ -70,20 +70,17 @@ public class AppoinmentAPI extends HttpServlet {
 	}
 
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("Inside");
 		Map paras = getParasMap(request);
-		String output = APP.ConfirmAppoinment(paras.get("appID").toString());
-		response.getWriter().write(output); 
-		System.out.println("Inside");
+		String output = APP.ConfirmAppoinment(paras.get("AppointmentID").toString());
+		response.getWriter().write(output);
 	}
 
 	/**
 	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("Inside");
 		Map paras = getParasMap(request);
-		String output = APP.DeleteAppoinment(paras.get("appID").toString());
+		String output = APP.DeleteAppoinment(paras.get("AppointmentID").toString());
 		response.getWriter().write(output); 
 	}
 

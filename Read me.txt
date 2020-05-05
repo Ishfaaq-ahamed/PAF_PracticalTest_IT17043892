@@ -17,6 +17,8 @@
   value in range of 1 to 8.
 
 # Once the appoinment is created, It'll be on the state of 'Pending' and once the appoinment is confirmed,
-  It would change it's status. That's the update funcytion here
+  It would change it's status to 'Approved'. That's the update function here
 
 # Delete function here is just the usual delete.
+
+#Database file - hospitalmanagement
